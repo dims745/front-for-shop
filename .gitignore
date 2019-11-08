@@ -9,6 +9,10 @@
 # production
 /build
 
+.metadata
+
+RemoteSystemsTempFiles
+
 # misc
 .DS_Store
 src/.env
