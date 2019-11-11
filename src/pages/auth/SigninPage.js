@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './index.css';
 import { Link , Redirect } from 'react-router-dom';
-import store from '../../redux';
 import { connect } from 'react-redux';
 import md5 from 'md5';
 import AuthWithSN from './AuthWithSN';
@@ -21,7 +20,7 @@ class SigninPage extends Component {
 
     render() {
 
-        if(store.getState().process.logined)
+        if(this.props.logined)
             return (
                 <Redirect to='/'/>
             );

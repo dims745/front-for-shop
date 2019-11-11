@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import '../../styles/Main.css';
 import Paginate from '../Paginate';
 import { parseUrl } from 'query-string';
-import { getFromCategory } from '../../redux/actions';
+import { getFromCategory } from './actions';
 
 class CategoryView extends Component {
 

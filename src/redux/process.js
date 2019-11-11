@@ -1,4 +1,4 @@
-import {authCreate, addAuth, addToBucket, setBucket} from './reducers';
+import {authCreate, addAuth, addToBucket, setBucket} from './mutators';
 
 const initState = {
     logined: false,

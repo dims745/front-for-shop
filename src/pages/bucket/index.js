@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import  '../../styles/Main.css';
 import Item from '../Item';
 import {Link} from 'react-router-dom';
-import { getItems } from '../../redux/actions';
+import { getItems } from './actions';
 
 class Bucket extends Component {
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
-import { getItems } from '../../redux/actions';
+import { getItems } from './actions';
 
 class ItemPage extends Component{
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { makeOrder } from '../../redux/actions';
+import { makeOrder } from './actions';
 
 class Order extends Component {
 
