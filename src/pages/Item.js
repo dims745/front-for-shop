@@ -1,6 +1,5 @@
 import React , { Component } from 'react';
 import { Link } from 'react-router-dom';
-//import '../styles/Header.css';
 import { connect } from 'react-redux';
 import '../styles/Main.css';
 

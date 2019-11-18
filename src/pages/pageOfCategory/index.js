@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import '../../styles/Main.css';
 import Paginate from '../Paginate';
 import { parseUrl } from 'query-string';
-import { getFromCategory } from '../../redux/actions';
+import { getFromCategory } from './actions';
 
 class CategoryView extends Component {
 
@@ -13,25 +13,27 @@ class CategoryView extends Component {
     }
 
     render() {
-
+        let loading = false;
         let query = parseUrl(document.location.toString()).query;
 
         if(!this.props.category || !this.props.items || this.props.items.length) {
             this.props.getItems(query.category, query.page ? query.page : 1);
-            return (
-                <div>
-                    Loading...
-                </div>
-            );
+            loading = true;
         }
 
         let category = this.props.category.find(it => query.category === it.id.toString());
 
         return (
             <div>
-                <h3>Products of category {category.name}</h3>
-                <p>{category.description}</p>
-                <Paginate items={this.props.items}/>
+                {
+                loading ?
+                <p>Loading</p> :
+                <div>
+                    <h3>Products of category {category.name}</h3>
+                    <p>{category.description}</p>
+                    <Paginate items={this.props.items}/>
+                </div>
+                }
             </div>
         );
     }

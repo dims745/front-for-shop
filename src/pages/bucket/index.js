@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import  '../../styles/Main.css';
 import Item from '../Item';
 import {Link} from 'react-router-dom';
-import { getItems } from '../../redux/actions';
+import { getItems } from './actions';
 
 class Bucket extends Component {
 
@@ -12,92 +12,85 @@ class Bucket extends Component {
     }
 
     render() {
-        if(!this.props.bucket || this.props.bucket.length<1)
-            return (
-                <div>
-                    <h2>
-                        Bucket is empty
-                    </h2>
-                </div>
-            );
-
-        if(!this.props.items  || !this.props.user || !this.props.items.length) {
-            this.props.getBucketItems(this.props.bucket);
-            return (
-                <div>
-                    <h2>
-                        Bucket is loading
-                    </h2>
-                </div>
-            );
-        }
-
-        let items = [];
-        this.props.items.map(item=> items[item.id]=1);
-        if(Object.keys(items).join() !== Object.keys(this.props.bucket).join()) {
-            this.props.getBucketItems(this.props.bucket);
-            return (
-                <div>
-                    <h2>
-                        Bucket is loading
-                    </h2>
-                </div>
-            );
-        }
-
-        let bucket = [];
+        let state = '';
         let totalPrice = 0;
-        this.props.bucket.map((item, index) =>{
-            bucket[index] = this.props.items.find(it => it.id === index);
-            totalPrice += item * bucket[index].price;
-            return true;
-        });
+
+        if(!this.props.bucket || this.props.bucket.length<1)
+            state = 'Bucket is empty';
+        else
+            if(!this.props.items  || !this.props.user || !this.props.items.length) {
+                this.props.getBucketItems(this.props.bucket);
+                state = 'Bucket is loading';
+            }
+            else {
+                let items = [];
+                this.props.items.map(item=> items[item.id]=1);
+                if(Object.keys(items).join() !== Object.keys(this.props.bucket).join()) {
+                    this.props.getBucketItems(this.props.bucket);
+                    state = 'Bucket is loading';
+                }
+                let bucket = [];
+                this.props.bucket.map((item, index) =>{
+                    bucket[index] = this.props.items.find(it => it.id === index);
+                    totalPrice += item * bucket[index].price;
+                    return true;
+                });
+            }
+
+        
 
         return (
             <div>
-                <h2>
-                    Bucket:
-                </h2>
-                <div>
-                    Total Price = {totalPrice} $
-                </div>
-                <br/>
                 {
-                    this.props.user.id ?
+                    state ?
+                        state :
                         <div>
-                            <Link to={'/order'}>
-                                <button>make order</button>
-                            </Link>
+                            <h2>
+                                Bucket:
+                            </h2>
+                            <div>
+                                Total Price = {totalPrice} $
+                            </div>
                             <br/>
+                            {
+                                this.props.user.id ?
+                                    <div>
+                                        <Link to={'/order'}>
+                                            <button>make order</button>
+                                        </Link>
+                                        <br/>
+                                    </div>
+                                    : <div>
+                                    to make order you need login
+                                    <br/>
+                                    </div>
+                            }
+                            {
+                                this.props.bucket.map((item, index) =>
+                                    <div key={index}>
+                                        <hr/>
+                                        <Item
+                                            item={this.props.items.find(it => it.id === index)}
+                                        />
+                                        <label>
+                                            Count {item}
+                                        </label>
+                                        <br/>
+                                        <input ref={index}/>
+                                        <label> Del from </label>
+                                        <img
+                                            alt={'bucket'}
+                                            onClick={()=>this.onClick(index)}
+                                            className={'ico'}
+                                            src={process.env.REACT_APP_IMAGE_HOST + 'bucket.ico'}
+                                        />
+                                    </div>
+                                )
+                            }
                         </div>
-                        : <div>
-                        to make order you need login
-                        <br/>
-                        </div>
-                }
-                {
-                    this.props.bucket.map((item, index) =>
-                        <div key={index}>
-                            <hr/>
-                            <Item
-                                item={this.props.items.find(it => it.id === index)}
-                            />
-                            <label>
-                                Count {item}
-                            </label>
-                            <br/>
-                            <input ref={index}/>
-                            <label> Del from </label>
-                            <img
-                                alt={'bucket'}
-                                onClick={()=>this.onClick(index)}
-                                className={'ico'}
-                                src={process.env.REACT_APP_IMAGE_HOST + 'bucket.ico'}
-                            />
-                        </div>
-                    )
                 }
             </div>
+            
         );
     }
 }

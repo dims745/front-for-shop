@@ -4,7 +4,8 @@ import Item from './Item';
 import { parseUrl } from 'query-string';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getFromCategory, getFromSearch } from '../redux/actions';
+import { getFromCategory } from './pageOfCategory/actions';
+import { getFromSearch } from './header/actions';
 
 class Paginate extends Component {
 
