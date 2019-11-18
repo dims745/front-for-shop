@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import Footer from './pages/footer';
 import Header from './pages/header';
-import store from './redux';
 import { getCategory, getPopular } from './actions';
 import { verifyUser } from './pages/auth/actions';
 import { Route , Switch} from 'react-router-dom';
@@ -13,25 +12,17 @@ import ItemPage from './pages/itemPage';
 import SearchPage from './pages/searchPage';
 import Order from './pages/order';
 import Auth from './pages/auth';
-
-store.dispatch(verifyUser());
-
-store.dispatch(getCategory());
-
-store.dispatch(getPopular());
-
-if(sessionStorage.bucket)
-    store.dispatch({
-        type: 'SET_BUCKET',
-        bucket: JSON.parse(sessionStorage.getItem('bucket'))
-    });
-else
-    store.dispatch({
-        type: 'SET_BUCKET', bucket: {}
-    });
+import { connect } from 'react-redux';
 
 class App extends Component {
   render() {
+    this.props.verifyUser();
+    this.props.getPopular();
+    this.props.getCategory();
+    if(sessionStorage.bucket)
+        this.props.setBucket(JSON.parse(sessionStorage.getItem('bucket')));
+    else
+        this.props.setBucket({});
     return (
         <div className={'general'}>
             <Header />
@@ -56,4 +47,25 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(
+    state => ({}),
+    dispatch => ({
+       verifyUser() {
+           dispatch(verifyUser());
+        },
+
+       getCategory() {
+           dispatch(getCategory())
+       },
+
+       getPopular(){
+           dispatch(getPopular());
+       },
+
+       setBucket(bucket){
+            dispatch({
+                type: 'SET_BUCKET',bucket
+            });  
+       }
+    })
+)(App);

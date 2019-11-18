@@ -8,21 +8,23 @@ import { getFromSearch } from '../header/actions';
 class SearchPage extends Component {
 
     render() {
-
+        let loading = false;
         let query = parseUrl(document.location.toString()).query;
         if(!this.props.items || this.props.items.length) {
             this.props.getItems(query.searchKey, query.page ? query.page : 1);
-            return (
-                <div>
-                    Loading...
-                </div>
-            );
+            loading = true;
         }
 
         return (
             <div>
-                <h3>Result of search</h3>
-                <Paginate items={this.props.items}/>
+                {
+                loading ?
+                    <p>'Loading'</p> :
+                    <div>
+                        <h3>Result of search</h3>
+                        <Paginate items={this.props.items}/>
+                    </div>
+                }
             </div>
         );
     }

@@ -18,60 +18,55 @@ class ItemPage extends Component{
     }
 
     render() {
-
+        let loading = false;
         let item = document.location.href.split('/');
         item = item[item.length-1];
 
-        if(!this.props.item || !this.props.categories || !this.props.item.length) {
-            return (
-                <div>
-                    Loading... Please wait
-                </div>
-            );
-        }
+        if(!this.props.item || !this.props.categories || !this.props.item.length)
+            loading = true;
 
         item = this.props.item.find(it => it.id === +item);
 
-        if(!item) {
-            return (
-                <div>
-                    Loading... Please wait
-                </div>
-            );
-        }
+        if(!item)
+            loading = true;
 
         return (
             <div>
-                <img alt={''} src={process.env.REACT_APP_IMAGE_HOST + item.id + '.jpg'}/>
-                <br/>
-                <h3>{item.name}</h3>
-                <p>
-                    Categories: {
-                    this.props.categories.find(it => it.id === item.categoryId) ?
-                    <Link to={
-                        '/category?category=' + this.props.categories.find(it => it.id === item.categoryId).id
-                    }>
-                        {this.props.categories.find(it => it.id === item.categoryId).name}
-                    </Link> : false
-                    }
-                </p>
-                <br/>
-                <p>
-                    Manufacturer: {item.manufacturer}
-                </p>
-                <br/>
-                <p>{item.description}</p>
-                <br/><br/>
-                <h3>Price: {item.price}</h3>
-                <h3>Available count: {item.count}</h3>
-                <br/>
-                <input name={item.id} ref={'count'}/><label> Add to </label>
-                <img
-                    alt={'bucket'}
-                    onClick={this.onClick.bind(this)}
-                    className={'ico'}
-                    src={process.env.REACT_APP_IMAGE_HOST + 'bucket.ico'}
-                />
+                {
+                    loading ? 'Loading' :
+                    <div>
+                        <img alt={''} src={process.env.REACT_APP_IMAGE_HOST + item.id + '.jpg'}/>
+                        <br/>
+                        <h3>{item.name}</h3>
+                        <p>
+                            Categories: {
+                            this.props.categories.find(it => it.id === item.categoryId) ?
+                            <Link to={
+                                '/category?category=' + this.props.categories.find(it => it.id === item.categoryId).id
+                            }>
+                                {this.props.categories.find(it => it.id === item.categoryId).name}
+                            </Link> : false
+                            }
+                        </p>
+                        <br/>
+                        <p>
+                            Manufacturer: {item.manufacturer}
+                        </p>
+                        <br/>
+                        <p>{item.description}</p>
+                        <br/><br/>
+                        <h3>Price: {item.price}</h3>
+                        <h3>Available count: {item.count}</h3>
+                        <br/>
+                        <input name={item.id} ref={'count'}/><label> Add to </label>
+                        <img
+                            alt={'bucket'}
+                            onClick={this.onClick.bind(this)}
+                            className={'ico'}
+                            src={process.env.REACT_APP_IMAGE_HOST + 'bucket.ico'}
+                        />
+                    </div>
+                }
             </div>
         );
     }
